@@ -1,0 +1,1 @@
+export const fetchContacts = {type: 'FETCH_CONTACTS'}
