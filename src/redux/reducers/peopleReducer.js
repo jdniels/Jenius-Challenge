@@ -4,6 +4,12 @@ const KEY_TO_FILTER = ['firstName', 'lastName']
 const initialState = {
     data: [],
     keyword: '',
+    formContact: {
+        firstName: "",
+        lastName: "",
+        age: null,
+        photo: ''
+      },
     isLoading: false
 }
 
@@ -25,7 +31,30 @@ const peopleReducer = (state = initialState, action) => {
                 ...state,
                 isLoading: true
             }
-
+        case 'HANDLE_FIRSTNAME':
+            return {
+                ...state, formContact:{
+                    ...state.formContact, firstName: payload
+                }
+            }
+        case 'HANDLE_LASTNAME':
+            return {
+                ...state, formContact:{
+                    ...state.formContact, lastName: payload
+                }
+            }
+        case 'HANDLE_AGE':
+            return {
+                ...state, formContact:{
+                    ...state.formContact, age: payload
+                }
+            }
+        case 'HANDLE_PHOTO':
+            return {
+                ...state, formContact:{
+                    ...state.formContact, photo: payload
+                }
+            }
         default: return state
     }
 }

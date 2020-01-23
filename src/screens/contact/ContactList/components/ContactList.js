@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, TouchableOpacity, StyleSheet, TouchableHighlight, Text } from 'react-native';
 import { ListItem } from 'react-native-elements'
 import { Searchbar } from 'react-native-paper';
 import { connect } from 'react-redux'
-import * as Service from '../service/ContactListService'
 import { createFilter } from "react-native-search-filter";
 import FAB from 'react-native-fab'
-import Icon from 'react-native-vector-icons/Ionicons'
-import { FlatList, Item } from 'react-native';
+import { FlatList } from 'react-native';
 import { contacts } from '../../../../redux/action/peopleReducer'
+import Swipeable from 'react-native-swipeable';
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const KEY_TO_FILTER = ['firstName', 'lastName']
 class ContactList extends React.Component {
@@ -42,7 +42,15 @@ class ContactList extends React.Component {
   
 
   renderItem = ({ item, index }) => {
+    const rightButtons = [
+      <TouchableOpacity onPress={() => {console.log('Pressed')}}>
+      <View style={{justifyContent: 'center', padding: 25, backgroundColor: 'red', margin: 'auto'}}>
+          <Icon name="ios-trash" size={35} color="white"/>
+      </View>
+      </TouchableOpacity>
+    ];
     return (
+      <Swipeable rightButtons={rightButtons}>
       <TouchableOpacity onPress={() => { this.props.navigation.navigate('PersonDetail', { row: item }) }}>
         <ListItem
           key={index}
@@ -51,6 +59,7 @@ class ContactList extends React.Component {
           bottomDivider
         />
       </TouchableOpacity>
+      </Swipeable>
     )
   }
 
@@ -64,14 +73,14 @@ class ContactList extends React.Component {
               onChangeText={(keyword) => this.setState({keyword}) }
             />
           </View>
-          <View>
+          <View style={{flex: 1}}>
             <FlatList
               data={this.peopleSort()}
               keyExtractor={(res, index) => res.id} 
               renderItem={this.renderItem}
             />
           </View>
-          <FAB onClickAction={() => this.props.navigation.navigate("AddContact")}/>
+          <FAB buttonColor="blue" onClickAction={() => this.props.navigation.navigate("AddContact")}/>
         </>
       )
     }else {
@@ -84,11 +93,6 @@ class ContactList extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  spinnerTextStyle: {
-    color: '#FFF'
-  },
-})
 
 const mapStateToProps = (state) => {
   return {

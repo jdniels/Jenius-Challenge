@@ -1,4 +1,3 @@
-import API from '../../screens/constant/Api'
 import Axios from 'axios'
 
 export const contacts = () => ({

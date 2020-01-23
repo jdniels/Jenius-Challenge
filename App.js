@@ -2,14 +2,10 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import React, { Component } from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as StoreProvider } from 'react-redux'
-import { createStore } from 'redux'
-import reducers from './src/reducers/ContactReducer'
 import { createStackNavigator } from 'react-navigation-stack';
 import ContactList from './src/screens/contact/ContactList/components/ContactList'
 import PersonDetails from './src/screens/contact/ContactList/components/PersonDetail'
 import AddPerson from './src/screens/contact/ContactList/components/AddPerson'
-import { StatusBar } from 'react-native'
-
 import store from './src/redux/store'
 
 const AppNavigator = createStackNavigator({
