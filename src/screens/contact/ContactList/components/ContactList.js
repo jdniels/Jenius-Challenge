@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ActivityIndicator, TouchableOpacity, StyleSheet, TouchableHighlight, Text } from 'react-native';
+import { View, ActivityIndicator, TouchableOpacity, Alert, RefreshControl, Text } from 'react-native';
 import { ListItem } from 'react-native-elements'
 import { Searchbar } from 'react-native-paper';
 import { connect } from 'react-redux'
@@ -9,6 +9,7 @@ import { FlatList } from 'react-native';
 import { contacts } from '../../../../redux/action/peopleReducer'
 import Swipeable from 'react-native-swipeable';
 import Icon from 'react-native-vector-icons/Ionicons'
+import * as Service from '../../../../service/ContactListService'
 
 const KEY_TO_FILTER = ['firstName', 'lastName']
 class ContactList extends React.Component {
@@ -27,7 +28,9 @@ class ContactList extends React.Component {
   fetchPeople = async () => {
     await this.props.dispatch(contacts())
   }
-
+  onDelete = (id) => {
+    Service.deleteContact(id)
+  }
   onRefresh = () => {
     this.fetchPeople()
   }
@@ -43,7 +46,7 @@ class ContactList extends React.Component {
 
   renderItem = ({ item, index }) => {
     const rightButtons = [
-      <TouchableOpacity onPress={() => {console.log('Pressed')}}>
+      <TouchableOpacity onPress={() => {this.onDelete(item.id)}}>
       <View style={{justifyContent: 'center', padding: 25, backgroundColor: 'red', margin: 'auto'}}>
           <Icon name="ios-trash" size={35} color="white"/>
       </View>
@@ -55,7 +58,8 @@ class ContactList extends React.Component {
         <ListItem
           key={index}
           leftAvatar={{ source: { uri: item.photo } }}
-          title={item.firstName + " " + item.lastName}
+          title={item.firstName}
+          subtitle={item.lastName}
           bottomDivider
         />
       </TouchableOpacity>
@@ -75,6 +79,7 @@ class ContactList extends React.Component {
           </View>
           <View style={{flex: 1}}>
             <FlatList
+              refreshControl={<RefreshControl onRefresh={this.onRefresh}/>}
               data={this.peopleSort()}
               keyExtractor={(res, index) => res.id} 
               renderItem={this.renderItem}

@@ -5,32 +5,28 @@ import { TextInput } from 'react-native-paper';
 import { Appbar } from 'react-native-paper';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as Services from '../../../../service/ContactListService'
+
 class PersonDetail extends Component {
 
     handleSubmit = () => {
-      console.log("Photo")
-      Services.postContact(this.props.data)
+      Services.postContact(this.props.peopleReducer)
     }
 
     handlePhoto = (event) => {
-      console.log("Photo")
       let data = event
       this.props.dispatch({ type: 'HANDLE_PHOTO', payload: data})
     }
     handleFirstname = (event) => {
-      console.log("Photo")
       let data = event
       this.props.dispatch({ type: 'HANDLE_FIRSTNAME', payload: data})
     }
-    handleLastname = (event) => {
-      console.log("Photo")
+    handleLastname = (event) => {    
       let data = event
       this.props.dispatch({ type: 'HANDLE_LASTNAME', payload: data})
     }
     handleAge = (event) => {
-      console.log(event)
       let data = event
-      this.props.dispatch({ type: 'HANDLE_AGE', payload: data})
+      this.props.dispatch({ type: 'HANDLE_AGE', payload: Number(data) })
     }
 
     render() {
@@ -68,7 +64,6 @@ class PersonDetail extends Component {
                 />
                 <TextInput
                   label='Age'
-                  textContentType='telephoneNumber'
                   mode="outlined"
                   // value={this.state.text}
                   onChangeText={this.handleAge}
@@ -93,8 +88,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    // peopleReducer: state.peopleReducer.data.formContact
-    ...state
+    peopleReducer: state.peopleReducer.formContact
+    // ...state
   }
 }
 
