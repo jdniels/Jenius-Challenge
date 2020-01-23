@@ -6,6 +6,12 @@
             data: [], 
             error: null 
         };
+        case "FETCH_PERSON":
+          return { 
+            data: null,
+            loading: false,
+            error: null
+          }
       case "FETCH_CONTACT_SUCCESS":
         return { ...state, 
             data: action.data.data, 
