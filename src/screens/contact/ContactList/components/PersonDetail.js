@@ -10,7 +10,6 @@ class PersonDetail extends Component {
         const { navigation } = this.props;
         const data = navigation.getParam('row')
         const umur = data.age.toString();
-        console.log(umur, 'UMUR LOE');
         return (
             <>
             <View style={styles.container}>

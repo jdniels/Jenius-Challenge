@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { View, StyleSheet, Text} from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import { Avatar, Input} from 'react-native-elements';
 import { Appbar, FAB, TextInput } from 'react-native-paper';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -13,11 +13,13 @@ class PersonDetail extends Component {
         return (
             <>
             <View style={styles.container}>
-                <Appbar.Header style={{ backgroundColor: '#FFF' }}>
+            <Appbar.Header style={{ backgroundColor: '#FFF' }}>
                     <Appbar.BackAction
                         onPress={() => { this.props.navigation.navigate("Home") }}
                     />
-                    <Appbar.Content />
+                    <Appbar.Content/>
+                    <Appbar.Action />
+                    <Appbar.Content title="Save" style={{marginLeft: wp('30%')}} onPress={() => { this.props.navigation.navigate("PersonDetail") }}/>
                 </Appbar.Header>
                 <View style={styles.card}>
                     <Avatar rounded
@@ -37,13 +39,6 @@ class PersonDetail extends Component {
                     defaultValue={umur}/>
                 </View>
             </View>
-            <FAB
-                theme='white'
-                style={styles.fab}
-                label="Update"
-                icon="pencil"
-                onPress={() => { this.props.navigation.navigate("EditContact", {row: data})}}
-            />
             </>
         )
     }
