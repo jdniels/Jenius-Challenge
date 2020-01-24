@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { View, StyleSheet, KeyboardAvoidingView} from 'react-native';
-import { TextInput } from 'react-native-paper';
-import { Appbar } from 'react-native-paper';
+import { TextInput, Appbar } from 'react-native-paper';
+import { Avatar, Input} from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as Services from '../../../../service/ContactListService'
 
@@ -10,6 +10,11 @@ class PersonDetail extends Component {
 
     handleSubmit = () => {
       Services.postContact(this.props.peopleReducer)
+      setTimeout(() =>{this.props.navigation.navigate("Home")}, 1000)
+    }
+
+    onReFetch = () => {
+      this.props.onFetch()
     }
 
     handlePhoto = (event) => {
@@ -39,33 +44,30 @@ class PersonDetail extends Component {
                     <Appbar.BackAction
                         onPress={() => { this.props.navigation.navigate("Home") }}
                     />
-                    <Appbar.Content />
-                    <Appbar.Action icon="save" onPress={this.handleSubmit} />
+                    <Appbar.Content/>
+                    <Appbar.Action />
+                    <Appbar.Content title="Save" style={{marginLeft: wp('30%')}} onPress={this.handleSubmit}/>
                 </Appbar.Header>
+                <View style={styles.avatar}>
+                    <Avatar rounded
+                        size={200}
+                        />
+                </View>
                 <View style={{margin: 10}}>
-
                 <TextInput
                   label='Photo URL'
-                  mode="outlined"
-                  // value={this.state.text}
                   onChangeText={this.handlePhoto}
                 />
                 <TextInput
                   label='First Name'
-                  mode="outlined"
-                  // value={this.state.text}
                   onChangeText={this.handleFirstname}
                 />
                 <TextInput
                   label='Last Name'
-                  mode="outlined"
-                  // value={this.state.text}
                   onChangeText={this.handleLastname}
                 />
                 <TextInput
                   label='Age'
-                  mode="outlined"
-                  // value={this.state.text}
                   onChangeText={this.handleAge}
                 />
                 </View>
@@ -83,13 +85,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         margin: hp('5%')
-    }
+    },
+    avatar: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: hp('5%')
+  },
 })
 
 const mapStateToProps = (state) => {
   return {
     peopleReducer: state.peopleReducer.formContact
-    // ...state
   }
 }
 

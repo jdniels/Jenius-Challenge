@@ -1,6 +1,3 @@
-import { createFilter } from "react-native-search-filter";
-const KEY_TO_FILTER = ['firstName', 'lastName']
-
 const initialState = {
     data: [],
     keyword: '',

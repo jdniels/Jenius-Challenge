@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, ActivityIndicator, TouchableOpacity, Alert, RefreshControl, Text } from 'react-native';
+import { View, ActivityIndicator, TouchableOpacity, StyleSheet, RefreshControl, Text } from 'react-native';
 import { ListItem } from 'react-native-elements'
-import { Searchbar } from 'react-native-paper';
+import { Searchbar, FAB } from 'react-native-paper';
 import { connect } from 'react-redux'
 import { createFilter } from "react-native-search-filter";
-import FAB from 'react-native-fab'
 import { FlatList } from 'react-native';
 import { contacts } from '../../../../redux/action/peopleReducer'
 import Swipeable from 'react-native-swipeable';
@@ -17,14 +16,12 @@ class ContactList extends React.Component {
     super(props)
     this.state = {
       keyword: '',
-      spinner: false
     }
   }
   
   componentDidMount() {
     this.fetchPeople();
   }
-
   fetchPeople = async () => {
     await this.props.dispatch(contacts())
   }
@@ -34,7 +31,7 @@ class ContactList extends React.Component {
   onRefresh = () => {
     this.fetchPeople()
   }
-  peopleSort = () => {
+  filterPerson = () => {
     const filterPerson = this.props.peopleReducer.data.data.filter(createFilter(this.state.keyword, KEY_TO_FILTER)).sort((a, b) => {
       let peopleA = a.firstName.toUpperCase();
       let peopleB = b.firstName.toUpperCase();
@@ -80,12 +77,17 @@ class ContactList extends React.Component {
           <View style={{flex: 1}}>
             <FlatList
               refreshControl={<RefreshControl onRefresh={this.onRefresh}/>}
-              data={this.peopleSort()}
+              data={this.filterPerson()}
               keyExtractor={(res, index) => res.id} 
               renderItem={this.renderItem}
             />
           </View>
-          <FAB buttonColor="blue" onClickAction={() => this.props.navigation.navigate("AddContact")}/>
+          {/* <FAB buttonColor="blue" onClickAction={() => this.props.navigation.navigate("AddContact")} onFetch={this.onRefresh}/> */}
+          <FAB
+                style={styles.fab}
+                icon="plus"
+                onPress={() => this.props.navigation.navigate("AddContact")} onFetch={this.onRefresh}
+            />
         </>
       )
     }else {
@@ -97,6 +99,15 @@ class ContactList extends React.Component {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  fab: {
+      position: 'absolute',
+      margin: 16,
+      right: 0,
+      bottom: 0,
+    },
+})
 
 
 const mapStateToProps = (state) => {

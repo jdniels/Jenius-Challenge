@@ -6,25 +6,29 @@ export async function Contacts(){
 }
 export async function postContact(data){
     console.log(data, 'Data API')
-    return await API.post('contact', data)
-        .then((response) => response.data)
-        .catch((error) => console.log(error))
+    const response = await API.post('contact', data)
+        if (response.status === 201) {
+            alert(response.data.message)
+        }else {
+            alert(response.data.message)
+        }
 }
 
 export async function deleteContact(id){
-
-    return await API.delete(`contact/${id}`)
-    .then((response) => alert(response.data.message))
-        .catch((error) => console.log(error.message) )
+    const response = await API.delete(`contact/${id}`)
+        console.log(response, 'RESPONSE DELETE')
+    // .then((response) => alert(response.data.message))
+    //     .catch((rep) => console.log(response.data.message) )
 }
 
-export async function updateContact(id){
+export async function updateContact(id, data){
     const payload = {
-        firstName: '',
-        lastName: '',
-        age: '',
-        photo: ''
+        firstName: data.firstName,
+        lastName: data.lastName,
+        age: data.age,
+        photo: data.photo
     }
     await API.put(`contact/${id}`, payload)
     .then((response) => response.data)
+    .catch((error) => console.log(error))
 }
